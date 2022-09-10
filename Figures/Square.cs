@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenTK.Mathematics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace OpenTK_Project.Figures
 {
-    class Square
+    class Square : Shape
     {
 
         //atributos
-        readonly float[] Vertices = new float[]
+        readonly float[] VertexArray = new float[]
         {
             //posiciones
-            0.5f, -0.5f,  0.0f, // 0
-            0.5f,  0.5f,  0.0f, // 1 
-           -0.5f,  0.5f,  0.0f, // 2
-           -0.5f, -0.5f,  0.0f, // 3
+            0.25f, -0.25f,  0.0f, // 0
+            0.25f,  0.25f,  0.0f, // 1 
+           -0.25f,  0.25f,  0.0f, // 2
+           -0.25f, -0.25f,  0.0f, // 3
 
         };
 
@@ -28,32 +29,23 @@ namespace OpenTK_Project.Figures
             
         };
 
+        readonly Color4 DefaultColor = new Color4(142, 138, 125, 255);
 
 
-        //constructor
-        public Square()
+        //constructores
+        public Square() : base()
         {
+            Init(VertexArray, Indices, DefaultColor);
         }
 
-        //getters
-        public float[] GetVertices()
+        public Square(Vector3 position) : base(position)
         {
-            return Vertices;
+            Init(VertexArray, Indices, DefaultColor);
         }
 
-        public int VerticesCount()
+        public Square(Vector3 position, Color4 color) : base(position, color)
         {
-            return Vertices.Length;
-        }
-
-        public uint[] GetIndices()
-        {
-            return Indices;
-        }
-
-        public int IndexCount()
-        {
-            return Indices.Length;
+            Init(VertexArray, Indices, color);
         }
     }
 }

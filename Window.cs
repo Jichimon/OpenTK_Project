@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenTK_Project.Core;
 using OpenTK_Project.Figures;
+using OpenTK.Mathematics;
 
 namespace OpenTK_Project
 {
@@ -15,40 +16,17 @@ namespace OpenTK_Project
     {
 
         //atributos
-        int VertexBufferObject;
-        int VertexArrayObject;
-        int IndexBufferObject;
-        Square Shape = new Square();
-        Shader Shader;
+        Shape Shape1, Shape2;
 
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
         {
-            Init();
-        }
+            Vector3 topRight = new Vector3(0.5f, 0.5f, 0.0f);
+            Vector3 bottomLeft = new Vector3(-0.5f, -0.5f, 0.0f);
 
-
-        private void Init()
-        {
-            VertexArrayObject = GL.GenVertexArray(); //generamos el VAO
-            VertexBufferObject = GL.GenBuffer(); //generamos el VBO
-            IndexBufferObject = GL.GenBuffer(); //generamos el IBO
-
-            GL.BindVertexArray(VertexArrayObject); //habilitamos el VAO 
-
-            //enlazamos el VBO con un buffer de openGL y lo inicializamos
-            GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, Shape.VerticesCount() * sizeof(float), Shape.GetVertices(), BufferUsageHint.StaticDraw);
-
-            //enlazamos el IBO con un buffer de openGL y lo inicializamos
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, IndexBufferObject);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, Shape.IndexCount() * sizeof(uint), Shape.GetIndices(), BufferUsageHint.StaticDraw);
-
-            //creamos y usamos el program shader
-            string vertexPath = "Resources/Shaders/VertexShader.glsl";
-            string fragmentPath = "Resources/Shaders/FragmentShader.glsl";
-
-            Shader = new Shader(vertexPath, fragmentPath);
+            Color4 color = new Color4(200,0,150,255);
+            Shape1 = new Square(bottomLeft);
+            Shape2 = new Square(topRight, color);
         }
 
 
@@ -57,13 +35,6 @@ namespace OpenTK_Project
         {
             GL.ClearColor(0.12f, 0.32f, 0.2f, 1.0f);
 
-
-            //configuramos los atributos del vertexbuffer y lo habilitamos
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, sizeof(float) * 3, 0);
-            GL.EnableVertexAttribArray(0);
-
-            Shader.Use();
-
             base.OnLoad();
         }
 
@@ -71,10 +42,8 @@ namespace OpenTK_Project
         {
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
-            Shader.Use();
-            GL.BindVertexArray(VertexArrayObject);
-            //Dibuja mi casa
-            GL.DrawElements(PrimitiveType.Triangles, Shape.IndexCount(), DrawElementsType.UnsignedInt, 0);
+            Shape1.Draw();
+            Shape2.Draw();
 
             Context.SwapBuffers();
             base.OnRenderFrame(e);
@@ -91,9 +60,8 @@ namespace OpenTK_Project
         //para cerrar el programa
         protected override void OnUnload()
         {
-            GL.BindBuffer(BufferTarget.ArrayBuffer, 0); //anulamos el ArrayBuffer
-            GL.DeleteBuffer(VertexBufferObject); //y borramos el VBO
-            Shader.Dispose(); //eliminamos el shader
+            Shape1.Destroy();
+            Shape2.Destroy();
             base.OnUnload();
         }
 

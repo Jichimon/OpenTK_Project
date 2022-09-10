@@ -1,17 +1,33 @@
 ﻿using System;
 using System.IO;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Mathematics;
 
 namespace OpenTK_Project.Core
 {
-    class Shader
+    class ShaderEngine
     {
         //atributos
-        int Id;
-        private bool DisposedFlag = false;
+
+        private int Id;
+        private bool DisposedValue = false;
 
         //constructor
-        public Shader(string vertexPath, string fragmentPath)
+
+        public ShaderEngine()
+        {
+            string vertexPath = "../../../Resources/Shaders/VertexShader.glsl";
+            string fragmentPath = "../../../Resources/Shaders/FragmentShader.glsl";
+
+            Init(vertexPath, fragmentPath);
+        }
+        public ShaderEngine(string vertexPath, string fragmentPath)
+        {
+            Init(vertexPath, fragmentPath);
+        }
+
+
+        private void Init(string vertexPath, string fragmentPath)
         {
             int vertexShader, fragmentShader; //el id de cada shader
 
@@ -54,10 +70,25 @@ namespace OpenTK_Project.Core
 
             //si hay algun error se verá en consola para debugging
             string infoLogVert = GL.GetShaderInfoLog(shader);
-            if (infoLogVert != System.String.Empty)
-                System.Console.WriteLine(infoLogVert);
+            if (infoLogVert != string.Empty)
+                Console.WriteLine(infoLogVert);
 
             return shader;
+        }
+
+
+        public void SetUniformColor4(string name, Color4 color)
+        {
+            GL.Uniform4(GetUniformLocation(name), color);
+        }
+
+
+        private int GetUniformLocation(string name)
+        {
+            int location = GL.GetUniformLocation(Id, name);
+            if (location == -1)
+                Console.WriteLine("Warning: uniform " + name + " - no existe!");
+            return location;
         }
 
 
@@ -69,15 +100,15 @@ namespace OpenTK_Project.Core
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!DisposedFlag)
+            if (!DisposedValue)
             {
                 GL.DeleteProgram(Id);
 
-                DisposedFlag = true;
+                DisposedValue = true;
             }
         }
 
-        ~Shader()
+        ~ShaderEngine()
         {
             GL.DeleteProgram(Id);
         }
@@ -88,5 +119,7 @@ namespace OpenTK_Project.Core
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+
     }
 }
