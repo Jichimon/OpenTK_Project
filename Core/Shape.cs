@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using Newtonsoft.Json;
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK_Project.Core;
 using OpenTK_Project.Utilities;
@@ -8,9 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenTK_Project
+namespace OpenTK_Project.Core
 {
-    abstract class Shape
+    class Shape
     {
 
         Vector3[] Vertices = Array.Empty<Vector3>();
@@ -54,6 +55,28 @@ namespace OpenTK_Project
             Color = color;
         }
 
+        /// <summary>
+        /// Crea el objeto dibujable para la figura y establece su posición en el plano.
+        /// </summary>
+        /// <param name="position"> posicion de la figura en la ventana </param>
+        /// <param name="figure"> datos de la figura (vertices, indice y color) </param>
+        public Shape(Vector3 position, Figure figure)
+        {
+            SetInitialPosition(position);
+            Init(figure.Vertices, figure.Indices, figure.Color);
+        }
+
+
+        /// <summary>
+        /// Crea el objeto dibujable para la figura y establece su posición en el plano.
+        /// </summary>
+        /// <param name="position"> posicion de la figura en la ventana </param>
+        /// <param name="figure"> datos de la figura (vertices, indice y color) </param>
+        public Shape(Vector3 position, Color4 color, Figure figure)
+        {
+            SetInitialPosition(position);
+            Init(figure.Vertices, figure.Indices, color);
+        }
 
         private void SetInitialPosition(Vector3 initialPosition)
         {

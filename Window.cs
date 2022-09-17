@@ -7,8 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenTK_Project.Core;
-using OpenTK_Project.Figures;
 using OpenTK.Mathematics;
+using OpenTK_Project.Utilities;
 
 namespace OpenTK_Project
 {
@@ -21,12 +21,6 @@ namespace OpenTK_Project
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
         {
-            Vector3 topRight = new Vector3(0.5f, 0.5f, 0.0f);
-            Vector3 bottomLeft = new Vector3(-0.5f, -0.5f, 0.0f);
-
-            Color4 color = new Color4(200,0,150,255);
-            Shape1 = new Square(bottomLeft);
-            Shape2 = new Square(topRight, color);
         }
 
 
@@ -34,6 +28,21 @@ namespace OpenTK_Project
         protected override void OnLoad()
         {
             GL.ClearColor(0.12f, 0.32f, 0.2f, 1.0f);
+
+
+            Vector3 topRight = new Vector3(0.5f, 0.5f, 0.0f);
+            Vector3 bottomLeft = new Vector3(-0.5f, -0.5f, 0.0f);
+
+            Color4 color = new Color4(200, 0, 150, 255);
+            //Shape1 = new Square(bottomLeft);
+            //Shape2 = new Square(topRight, color);
+
+
+            string jsonFile = "../../../Resources/Figures/Square.json";
+            Figure square = ObjectBuilder.BuildFromJson(jsonFile);
+
+            Shape1 = new Shape(topRight, square);
+            Shape2 = new Shape(bottomLeft, color, square);
 
             base.OnLoad();
         }
