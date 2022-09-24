@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenTK_Project.Core;
 using OpenTK.Mathematics;
-using OpenTK_Project.Utilities;
+using OpenTK_Project.MyScenes;
 
 namespace OpenTK_Project
 {
@@ -16,11 +16,12 @@ namespace OpenTK_Project
     {
 
         //atributos
-        Shape Shape1, Shape2;
+        Scene Scene1;
 
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
         {
+            Scene1 = new MainScene();
         }
 
 
@@ -29,20 +30,7 @@ namespace OpenTK_Project
         {
             GL.ClearColor(0.12f, 0.32f, 0.2f, 1.0f);
 
-
-            Vector3 topRight = new Vector3(0.5f, 0.5f, 0.0f);
-            Vector3 bottomLeft = new Vector3(-0.5f, -0.5f, 0.0f);
-
-            Color4 color = new Color4(200, 0, 150, 255);
-            //Shape1 = new Square(bottomLeft);
-            //Shape2 = new Square(topRight, color);
-
-
-            string jsonFile = "../../../Resources/Figures/Square.json";
-            Figure square = ObjectBuilder.BuildFromJson(jsonFile);
-
-            Shape1 = new Shape(topRight, square);
-            Shape2 = new Shape(bottomLeft, color, square);
+            Scene1.OnLoad();
 
             base.OnLoad();
         }
@@ -51,8 +39,7 @@ namespace OpenTK_Project
         {
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
-            Shape1.Draw();
-            Shape2.Draw();
+            Scene1.Draw();
 
             Context.SwapBuffers();
             base.OnRenderFrame(e);
@@ -69,8 +56,7 @@ namespace OpenTK_Project
         //para cerrar el programa
         protected override void OnUnload()
         {
-            Shape1.Destroy();
-            Shape2.Destroy();
+            Scene1.Destroy();
             base.OnUnload();
         }
 

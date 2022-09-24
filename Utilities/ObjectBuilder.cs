@@ -11,10 +11,10 @@ namespace OpenTK_Project.Utilities
 {
     class ObjectBuilder
     {
-        public static Figure BuildFromJson(string fileName)
+        public static Part BuildPartFromJson(string fileName)
         {
             string jsonString = File.ReadAllText(fileName);
-            Figure objeto = JsonConvert.DeserializeObject<Figure>(jsonString);
+            Part objeto = JsonConvert.DeserializeObject<Part>(jsonString);
             Console.WriteLine(objeto);
             return objeto;
         }
@@ -26,5 +26,15 @@ namespace OpenTK_Project.Utilities
             File.Create(fileName);
             File.WriteAllText(fileName, jsonFile);
         }
+
+
+        public static GraphicObject BuildFromJson(string fileName)
+        {
+            string jsonString = File.ReadAllText(fileName);
+            GraphicObject objeto = JsonConvert.DeserializeObject<GraphicObject>(jsonString);
+            Console.WriteLine(objeto);
+            return objeto;
+        }
+
     }
 }

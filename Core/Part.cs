@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace OpenTK_Project.Core
 {
-    class Shape
+    public class Part : IDrawable
     {
 
         Vector3[] Vertices = Array.Empty<Vector3>();
@@ -24,84 +24,60 @@ namespace OpenTK_Project.Core
         ShaderEngine Shader;
 
         //guarda la posicion inicial del centro del objeto
-        protected Vector3 Origin;
+        private Vector3 _origin = Vector3.Zero;
+        private Vector3 _position = Vector3.Zero;
+        public Vector3 Origin { get => _origin; set => _origin = value; }
+        public Vector3 Position { get => _position; set => _position = value; }
 
+        //constantes
+        readonly Color4 DefaultColor = new Color4(142, 138, 125, 255);
 
-        /// <summary>
-        /// Constructor básico que crea un objeto en el centro de la ventana
-        /// </summary>
-        public Shape()
+        [JsonConstructor]
+        public Part(float[] vertices, uint[] indices, Point origin, Color4? color)
         {
-            SetInitialPosition(Vector3.Zero);
-        }
-
-        /// <summary>
-        /// Crea una figura cuyo origen, es su posición pasada por parámetro.
-        /// </summary>
-        /// <param name="relativePosition"> posicion de la figura en la ventana </param>
-        public Shape(Vector3 relativePosition)
-        {
-            SetInitialPosition(relativePosition);
-        }
-
-        /// <summary>
-        /// Crea una figura cuyo origen, es su posición pasada por parámetro y se le puede asignar un color.
-        /// </summary>
-        /// <param name="relativePosition"> posicion de la figura en la ventana </param>
-        /// <param name="color"> color de la figura </param>
-        public Shape(Vector3 relativePosition, Color4 color)
-        {
-            SetInitialPosition(relativePosition);
-            Color = color;
-        }
-
-        /// <summary>
-        /// Crea el objeto dibujable para la figura y establece su posición en el plano.
-        /// </summary>
-        /// <param name="position"> posicion de la figura en la ventana </param>
-        /// <param name="figure"> datos de la figura (vertices, indice y color) </param>
-        public Shape(Vector3 position, Figure figure)
-        {
-            SetInitialPosition(position);
-            Init(figure.Vertices, figure.Indices, figure.Color);
+            SetOrigin(origin);
+            Load(vertices, indices, color ?? DefaultColor);
         }
 
 
-        /// <summary>
-        /// Crea el objeto dibujable para la figura y establece su posición en el plano.
-        /// </summary>
-        /// <param name="position"> posicion de la figura en la ventana </param>
-        /// <param name="figure"> datos de la figura (vertices, indice y color) </param>
-        public Shape(Vector3 position, Color4 color, Figure figure)
-        {
-            SetInitialPosition(position);
-            Init(figure.Vertices, figure.Indices, color);
-        }
 
-        private void SetInitialPosition(Vector3 initialPosition)
+        private void SetOrigin(Point origin)
         {
-            Origin = initialPosition;
+            if (origin != null) Origin = origin.ParseToVector3();
+            else Origin = Vector3.Zero;
+
         }
 
 
-        private void SetVerticesInitialPosition(Vector3[] vertices)
+        public void SetInitialPosition(Vector3 initialPosition)
+        {
+            Position = initialPosition;
+
+        }
+
+        private void SetVerticesInitialPosition(Vector3 position)
         {
             List<Vector3> vertexlist = new();
-            foreach (Vector3 vertex in vertices)
+            foreach (Vector3 vertex in Vertices)
             {
-                Vector3 newPosition = vertex + Origin;
+                Vector3 newPosition = vertex + position;
                 vertexlist.Add(newPosition);
             }
             Vertices = vertexlist.ToArray();
         }
 
 
-        protected void Init(float[] vertexArray, uint[] indices, Color4 color)
+        private void Load(float[] vertexArray, uint[] indices, Color4 color)
         {
-            Vector3[] vertices = Converter.ParseToVector3Array(vertexArray);
-            SetVerticesInitialPosition(vertices);
+            Vertices = Converter.ParseToVector3Array(vertexArray);
             Indices = indices;
             Color = color;
+        }
+
+        internal void Init(Vector3 initialPosition)
+        {
+            SetInitialPosition(initialPosition);
+            SetVerticesInitialPosition(Origin + Position);
             VertexArrayObject = GL.GenVertexArray(); //generamos el VAO
             VertexBufferObject = GL.GenBuffer(); //generamos el VBO
             IndexBufferObject = GL.GenBuffer(); //generamos el IBO

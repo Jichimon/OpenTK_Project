@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace OpenTK_Project.Core
 {
-    class Point
+    public class Point
     {
         public float X;
         public float Y;
