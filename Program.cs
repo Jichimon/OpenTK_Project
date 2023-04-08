@@ -2,15 +2,45 @@
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using System;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
+
 
 namespace OpenTK_Project
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Running my first OpenTK App");
 
+    [DllImport("kernel32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    static extern bool AllocConsole();
+
+
+    [STAThread]
+        public static void Main(string[] args)
+        {
+            AllocConsole();
+
+            Console.WriteLine("Running my first OpenTK App");
+            Console.WriteLine("Please select a scenery file to show.");
+            Console.WriteLine("Press a ENTER to continue...");
+            Console.ReadLine();
+
+
+            string fileName = "";
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    fileName = openFileDialog.FileName;
+                }
+            }
+            //Console.WriteLine(fileName);
+            LoadOpenTK(fileName);
+
+        }
+        public static void LoadOpenTK(string fileName)
+        {
             var nativeWindowSettings = new NativeWindowSettings()
             {
                 Size = new Vector2i(800, 600),
@@ -19,9 +49,7 @@ namespace OpenTK_Project
                 Flags = ContextFlags.ForwardCompatible,
             };
 
-
-
-            using (var window = new Window(GameWindowSettings.Default, nativeWindowSettings))
+            using (var window = new Window(fileName, GameWindowSettings.Default, nativeWindowSettings))
             {
                 window.Run();
             }

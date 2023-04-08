@@ -21,8 +21,10 @@ namespace OpenTK_Project.Core
 
 
         [JsonConstructor]
-        public GraphicObject(Dictionary<string, Part> parts)
+        public GraphicObject(Point position, Dictionary<string, Part> parts)
         {
+            Origin = position.ParseToVector3();
+            Position = Origin;
             Parts = parts;
         }
 
@@ -35,11 +37,19 @@ namespace OpenTK_Project.Core
         }
 
 
-        private void LoadParts()
+        public void LoadParts()
         {
             foreach (var item in Parts)
             {
                 item.Value.Init(Origin);
+            }
+        }
+
+        public void SetViewProjectionMatrix(Matrix4 ViewProjectionMatrix)
+        {
+            foreach (Part item in Parts.Values)
+            {
+                item.SetViewProjectionMatrix(ViewProjectionMatrix);
             }
         }
 
@@ -56,6 +66,60 @@ namespace OpenTK_Project.Core
             foreach (var item in Parts)
             {
                 item.Value.Destroy();
+            }
+        }
+
+
+
+        //-----------------------------------------------------------------------
+        //------------------TRANSFORMATIONS--------------------------------------
+        //-----------------------------------------------------------------------
+
+
+
+        public void MoveWith(Vector3 direction)
+        {
+
+        }
+
+
+        public void Move(Vector3 direction)
+        {
+            foreach (var item in Parts)
+            {
+                item.Value.Move(direction);
+            }
+        }
+
+        public void Scale(Vector3 factor)
+        {
+            foreach (var item in Parts)
+            {
+                item.Value.Scale(factor);
+            }
+        }
+
+        public void RotateX(float angle)
+        {
+            foreach (var item in Parts)
+            {
+                item.Value.RotateX(angle);
+            }
+        }
+
+        public void RotateY(float angle)
+        {
+            foreach (var item in Parts)
+            {
+                item.Value.RotateY(angle);
+            }
+        }
+
+        public void RotateZ(float angle)
+        {
+            foreach (var item in Parts)
+            {
+                item.Value.RotateZ(angle);
             }
         }
     }

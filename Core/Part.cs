@@ -18,6 +18,14 @@ namespace OpenTK_Project.Core
         uint[] Indices;
         Color4 Color;
 
+        protected Matrix4 ModelMatrix;
+        protected Matrix4 MVPMatrix;
+        protected Matrix4 ViewProjectionMatrix;
+
+        protected Matrix4 Rotations;
+        protected Matrix4 Translations;
+        protected Matrix4 Scales;
+
         int VertexBufferObject;
         int VertexArrayObject;
         int IndexBufferObject;
@@ -35,6 +43,9 @@ namespace OpenTK_Project.Core
         [JsonConstructor]
         public Part(float[] vertices, uint[] indices, Point origin, Color4? color)
         {
+            ModelMatrix = Matrix4.Identity;
+            ViewProjectionMatrix = Matrix4.Identity;
+            MVPMatrix = ModelMatrix;
             SetOrigin(origin);
             Load(vertices, indices, color ?? DefaultColor);
         }
@@ -115,11 +126,29 @@ namespace OpenTK_Project.Core
             Shader.SetUniformColor4("u_Color", Color);
         }
 
+        public void SetViewProjectionMatrix(Matrix4 viewProjectionMatrix)
+        {
+            ViewProjectionMatrix = viewProjectionMatrix;
+            CalculateMvpMatrix();
+        }
+
+        protected void CalculateMvpMatrix()
+        {
+            MVPMatrix = ModelMatrix * ViewProjectionMatrix;
+        }
+
+        private void BindMatrix()
+        {
+            Shader.SetUniformMatrix4("mvp", MVPMatrix);
+        }
+
 
         public void Draw()
         {
+            CalculateMvpMatrix();
             //habilitamos todo
             Shader.Use();
+            BindMatrix();
             GL.BindVertexArray(VertexArrayObject);
 
             //Dibujamos
@@ -142,6 +171,42 @@ namespace OpenTK_Project.Core
             //creamos y usamos el program shader
             Shader = new ShaderEngine();
             Shader.Use();
+        }
+
+
+        //-----------------------------------------------------------------------
+        //------------------TRANSFORMATIONS--------------------------------------
+        //-----------------------------------------------------------------------
+
+        public void Move(Vector3 direction)
+        {
+            Position = Position + direction;
+            Translations = Matrix4.CreateTranslation(direction);
+            ModelMatrix = ModelMatrix * Translations;
+        }
+
+        public void Scale(Vector3 factor)
+        {
+            Scales = Matrix4.CreateScale(factor);
+            ModelMatrix = ModelMatrix * Scales;
+        }
+
+        public void RotateX(float angle)
+        {
+            Rotations = Matrix4.CreateRotationX(angle);
+            ModelMatrix = ModelMatrix * Rotations;
+        }
+
+        public void RotateY(float angle)
+        {
+            Rotations = Matrix4.CreateRotationY(angle);
+            ModelMatrix = ModelMatrix * Rotations;
+        }
+
+        public void RotateZ(float angle)
+        {
+            Rotations = Matrix4.CreateRotationZ(angle);
+            ModelMatrix = ModelMatrix * Rotations;
         }
 
     }

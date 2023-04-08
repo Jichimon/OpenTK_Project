@@ -1,6 +1,9 @@
-﻿using OpenTK.Mathematics;
+﻿using Newtonsoft.Json;
+using OpenTK.Mathematics;
+using OpenTK_Project.Utilities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,12 +20,10 @@ namespace OpenTK_Project.Core
         public Vector3 Origin { get => _origin; set => _origin = value; }
         public Vector3 Position { get => _position; set => _position = value; }
 
-
-        public Scene(Point position)
+        [JsonConstructor]
+        public Scene(Dictionary<string, GraphicObject> objects)
         {
-            Origin = position.ParseToVector3();
-            Position = Origin;
-            Objects = new();
+            Objects = objects;
         }
 
         public Scene()
@@ -31,9 +32,18 @@ namespace OpenTK_Project.Core
         }
 
 
-        public virtual void OnLoad()
+        public static Scene LoadScene(string fileName)
         {
-            Objects = new();
+            return ObjectBuilder.BuildSceneFromJson(fileName);
+        }
+
+
+        public void OnLoad()
+        {
+            foreach (var item in Objects)
+            {
+                item.Value.LoadParts();
+            }
         }
 
         public void AddObject(string name, GraphicObject @object)
@@ -51,6 +61,15 @@ namespace OpenTK_Project.Core
         }
 
 
+        public void SetViewProjectionMatrix(Matrix4 ViewProjectionMatrix)
+        {
+            foreach (GraphicObject item in Objects.Values)
+            {
+                item.SetViewProjectionMatrix(ViewProjectionMatrix);
+            }
+        }
+
+
         public void Draw()
         {
             foreach (var item in Objects)
@@ -64,6 +83,53 @@ namespace OpenTK_Project.Core
             foreach (var item in Objects)
             {
                 item.Value.Destroy();
+            }
+        }
+
+
+        //-----------------------------------------------------------------------
+        //------------------TRANSFORMATIONS--------------------------------------
+        //-----------------------------------------------------------------------
+
+
+
+        public void Move(Vector3 direction)
+        {
+            foreach (var item in Objects)
+            {
+                item.Value.Move(direction);
+            }
+        }
+
+        public void Scale(Vector3 factor)
+        {
+            foreach (var item in Objects)
+            {
+                item.Value.Scale(factor);
+            }
+        }
+
+        public void RotateX(float angle)
+        {
+            foreach (var item in Objects)
+            {
+                item.Value.RotateX(angle);
+            }
+        }
+
+        public void RotateY(float angle)
+        {
+            foreach (var item in Objects)
+            {
+                item.Value.RotateY(angle);
+            }
+        }
+
+        public void RotateZ(float angle)
+        {
+            foreach (var item in Objects)
+            {
+                item.Value.RotateZ(angle);
             }
         }
     }

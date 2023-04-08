@@ -82,6 +82,11 @@ namespace OpenTK_Project.Core
             GL.Uniform4(GetUniformLocation(name), color);
         }
 
+        public void SetUniformMatrix4(string name, Matrix4 matrix)
+        {
+            GL.UniformMatrix4(GetUniformLocation(name), false, ref matrix);
+        }
+
 
         private int GetUniformLocation(string name)
         {
