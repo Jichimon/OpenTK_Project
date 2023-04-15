@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using OpenTK_Project.Core;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+using OpenTK_Project.Resources.Objects.CarObject;
+using OpenTK_Project.Resources.Objects.HouseObject;
 
 namespace OpenTK_Project
 {
@@ -16,13 +18,16 @@ namespace OpenTK_Project
     {
 
         //atributos
-        Scene Scene1;
+        Car Car1;
+        House House1;
 
-        public Window(string sceneryFileName, GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
+        private readonly Vector3 _carInitialPosition = new(0.0f, 0.0f, -20.0f);
+
+        public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
         {
-            Console.WriteLine(sceneryFileName);
-            Scene1 = Scene.LoadScene(sceneryFileName);
+            Car1 = new Car(_carInitialPosition);
+            House1 = new();
         }
 
 
@@ -42,8 +47,9 @@ namespace OpenTK_Project
             Matrix4 view = Matrix4.LookAt(cameraPosition, target, up);
 
 
-            Scene1.OnLoad();
-            Scene1.SetViewProjectionMatrix(view * projection);
+            Car1.SetViewProjectionMatrix(view * projection);
+
+            House1.SetViewProjectionMatrix(view * projection);
 
             base.OnLoad();
         }
@@ -53,7 +59,8 @@ namespace OpenTK_Project
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             GL.Enable(EnableCap.DepthTest);
 
-            Scene1.Draw();
+            Car1.Draw();
+            House1.Draw();
 
             Context.SwapBuffers();
             base.OnRenderFrame(e);
@@ -66,91 +73,11 @@ namespace OpenTK_Project
             base.OnResize(e);
         }
 
-
-
-        //-----
-
-        protected override void OnKeyDown(KeyboardKeyEventArgs e)
-        {
-            KeyboardState inputKey = KeyboardState.GetSnapshot();
-
-            if (this.IsFocused)
-            {
-
-                if (inputKey.IsKeyDown(Keys.S))
-                {
-                    //hacia atrást
-                    Scene1.Move(new Vector3(0.0f, 0.0f, 0.05f));
-                }
-
-                if (inputKey.IsKeyDown(Keys.W))
-                {
-                    //hacia adelante
-                    Scene1.Move(new Vector3(0.0f, 0.0f, -0.05f));
-                }
-
-                if (inputKey.IsKeyDown(Keys.D))
-                {
-                    //hacia derecha
-                    Scene1.Move(new Vector3(0.05f, 0.0f, 0.0f));
-                }
-
-                if (inputKey.IsKeyDown(Keys.A))
-                {
-                    //hacia izquierda
-                    Scene1.Move(new Vector3(-0.05f, 0.0f, 0.0f));
-                }
-
-                if (inputKey.IsKeyDown(Keys.Space))
-                {
-                    //hacia arriba
-                    Scene1.Move(new Vector3(0.0f, 0.05f, 0.0f));
-                }
-
-                if (inputKey.IsKeyDown(Keys.LeftControl))
-                {
-                    //hacia abajo
-                    Scene1.Move(new Vector3(0.0f, -0.05f, 0.0f));
-                }
-
-                if (inputKey.IsKeyDown(Keys.Q))
-                {
-                    //mas grande
-                    Scene1.Scale(new Vector3(1.01f, 1.01f, 1.01f));
-                }
-
-                if (inputKey.IsKeyDown(Keys.E))
-                {
-                    //mas pequeño
-                    Scene1.Scale(new Vector3(0.99f, 0.99f, 0.99f));
-                }
-
-                if (inputKey.IsKeyDown(Keys.R))
-                {
-                    Scene1.RotateY(0.02f);
-                }
-
-                if (inputKey.IsKeyDown(Keys.T))
-                {
-                    Scene1.RotateX(0.02f);
-                }
-
-                if (inputKey.IsKeyDown(Keys.Y))
-                {
-                    Scene1.RotateZ(0.02f);
-                }
-
-            }
-            base.OnKeyDown(e);
-        }
-
-
-
-
         //para cerrar el programa
         protected override void OnUnload()
         {
-            Scene1.Destroy();
+            Car1.Destroy();
+            House1.Destroy();
             base.OnUnload();
         }
 

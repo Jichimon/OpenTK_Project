@@ -20,13 +20,17 @@ namespace OpenTK_Project.Core
         public Vector3 Position { get => _position; set => _position = value; }
 
 
-        [JsonConstructor]
+        
         public GraphicObject(Point position, Dictionary<string, Part> parts)
         {
             Origin = position.ParseToVector3();
             Position = Origin;
             Parts = parts;
         }
+
+
+
+        public GraphicObject() { Parts = new(); }
 
 
         public void SetInitialPosition(Point position)
@@ -43,6 +47,12 @@ namespace OpenTK_Project.Core
             {
                 item.Value.Init(Origin);
             }
+        }
+
+
+        public void SetNewPart(string partName, Part part)
+        {
+            Parts.Add(partName, part);
         }
 
         public void SetViewProjectionMatrix(Matrix4 ViewProjectionMatrix)
@@ -69,58 +79,5 @@ namespace OpenTK_Project.Core
             }
         }
 
-
-
-        //-----------------------------------------------------------------------
-        //------------------TRANSFORMATIONS--------------------------------------
-        //-----------------------------------------------------------------------
-
-
-
-        public void MoveWith(Vector3 direction)
-        {
-
-        }
-
-
-        public void Move(Vector3 direction)
-        {
-            foreach (var item in Parts)
-            {
-                item.Value.Move(direction);
-            }
-        }
-
-        public void Scale(Vector3 factor)
-        {
-            foreach (var item in Parts)
-            {
-                item.Value.Scale(factor);
-            }
-        }
-
-        public void RotateX(float angle)
-        {
-            foreach (var item in Parts)
-            {
-                item.Value.RotateX(angle);
-            }
-        }
-
-        public void RotateY(float angle)
-        {
-            foreach (var item in Parts)
-            {
-                item.Value.RotateY(angle);
-            }
-        }
-
-        public void RotateZ(float angle)
-        {
-            foreach (var item in Parts)
-            {
-                item.Value.RotateZ(angle);
-            }
-        }
     }
 }

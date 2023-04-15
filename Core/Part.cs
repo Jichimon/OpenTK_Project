@@ -5,6 +5,7 @@ using OpenTK_Project.Core;
 using OpenTK_Project.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,8 +41,21 @@ namespace OpenTK_Project.Core
         //constantes
         readonly Color4 DefaultColor = new Color4(142, 138, 125, 255);
 
-        [JsonConstructor]
+        
         public Part(float[] vertices, uint[] indices, Point origin, Color4? color)
+        {
+            ModelMatrix = Matrix4.Identity;
+            ViewProjectionMatrix = Matrix4.Identity;
+            MVPMatrix = ModelMatrix;
+            SetOrigin(origin);
+            Load(vertices, indices, color ?? DefaultColor);
+        }
+
+
+        public Part() { }
+
+
+        public void LoadPartData(float[] vertices, uint[] indices, Point origin, Color4? color)
         {
             ModelMatrix = Matrix4.Identity;
             ViewProjectionMatrix = Matrix4.Identity;
@@ -173,41 +187,6 @@ namespace OpenTK_Project.Core
             Shader.Use();
         }
 
-
-        //-----------------------------------------------------------------------
-        //------------------TRANSFORMATIONS--------------------------------------
-        //-----------------------------------------------------------------------
-
-        public void Move(Vector3 direction)
-        {
-            Position = Position + direction;
-            Translations = Matrix4.CreateTranslation(direction);
-            ModelMatrix = ModelMatrix * Translations;
-        }
-
-        public void Scale(Vector3 factor)
-        {
-            Scales = Matrix4.CreateScale(factor);
-            ModelMatrix = ModelMatrix * Scales;
-        }
-
-        public void RotateX(float angle)
-        {
-            Rotations = Matrix4.CreateRotationX(angle);
-            ModelMatrix = ModelMatrix * Rotations;
-        }
-
-        public void RotateY(float angle)
-        {
-            Rotations = Matrix4.CreateRotationY(angle);
-            ModelMatrix = ModelMatrix * Rotations;
-        }
-
-        public void RotateZ(float angle)
-        {
-            Rotations = Matrix4.CreateRotationZ(angle);
-            ModelMatrix = ModelMatrix * Rotations;
-        }
 
     }
 }

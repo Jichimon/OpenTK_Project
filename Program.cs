@@ -19,27 +19,10 @@ namespace OpenTK_Project
     [STAThread]
         public static void Main(string[] args)
         {
-            AllocConsole();
-
-            Console.WriteLine("Running my first OpenTK App");
-            Console.WriteLine("Please select a scenery file to show.");
-            Console.WriteLine("Press a ENTER to continue...");
-            Console.ReadLine();
-
-
-            string fileName = "";
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
-            {
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    fileName = openFileDialog.FileName;
-                }
-            }
-            //Console.WriteLine(fileName);
-            LoadOpenTK(fileName);
+            LoadOpenTK();
 
         }
-        public static void LoadOpenTK(string fileName)
+        public static void LoadOpenTK()
         {
             var nativeWindowSettings = new NativeWindowSettings()
             {
@@ -49,7 +32,7 @@ namespace OpenTK_Project
                 Flags = ContextFlags.ForwardCompatible,
             };
 
-            using (var window = new Window(fileName, GameWindowSettings.Default, nativeWindowSettings))
+            using (var window = new Window(GameWindowSettings.Default, nativeWindowSettings))
             {
                 window.Run();
             }

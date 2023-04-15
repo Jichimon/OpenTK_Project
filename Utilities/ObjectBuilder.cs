@@ -36,13 +36,13 @@ namespace OpenTK_Project.Utilities
             return objeto;
         }
 
-        public static Scene BuildSceneFromJson(string fileName)
-        {
-            string jsonString = File.ReadAllText(fileName);
-            Scene objeto = JsonConvert.DeserializeObject<Scene>(jsonString);
-            Console.WriteLine(objeto);
-            return objeto;
-        }
+        //public static Scene BuildSceneFromJson(string fileName)
+        //{
+        //    string jsonString = File.ReadAllText(fileName);
+        //    Scene objeto = JsonConvert.DeserializeObject<Scene>(jsonString);
+        //    Console.WriteLine(objeto);
+        //    return objeto;
+        //}
 
     }
 }
