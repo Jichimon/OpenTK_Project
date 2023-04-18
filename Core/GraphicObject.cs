@@ -11,7 +11,7 @@ namespace OpenTK_Project.Core
     public class GraphicObject : IDrawable
     {
 
-        Dictionary<string, Part> Parts;
+        Dictionary<string, Face> Parts;
 
         //guarda la posicion inicial del centro del objeto
         private Vector3 _origin = Vector3.Zero;
@@ -21,7 +21,7 @@ namespace OpenTK_Project.Core
 
 
         
-        public GraphicObject(Point position, Dictionary<string, Part> parts)
+        public GraphicObject(Point position, Dictionary<string, Face> parts)
         {
             Origin = position.ParseToVector3();
             Position = Origin;
@@ -50,14 +50,14 @@ namespace OpenTK_Project.Core
         }
 
 
-        public void SetNewPart(string partName, Part part)
+        public void SetNewPart(string partName, Face part)
         {
             Parts.Add(partName, part);
         }
 
         public void SetViewProjectionMatrix(Matrix4 ViewProjectionMatrix)
         {
-            foreach (Part item in Parts.Values)
+            foreach (Face item in Parts.Values)
             {
                 item.SetViewProjectionMatrix(ViewProjectionMatrix);
             }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace OpenTK_Project.Resources.Objects.HouseObject
 {
-    class Door : Part
+    class Door : Face
     {
 
         //atributos

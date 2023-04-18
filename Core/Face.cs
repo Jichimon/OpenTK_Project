@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace OpenTK_Project.Core
 {
-    public class Part : IDrawable
+    public class Face : IDrawable
     {
 
         Vector3[] Vertices = Array.Empty<Vector3>();
@@ -42,7 +42,7 @@ namespace OpenTK_Project.Core
         readonly Color4 DefaultColor = new Color4(142, 138, 125, 255);
 
         
-        public Part(float[] vertices, uint[] indices, Point origin, Color4? color)
+        public Face(float[] vertices, uint[] indices, Point origin, Color4? color)
         {
             ModelMatrix = Matrix4.Identity;
             ViewProjectionMatrix = Matrix4.Identity;
@@ -52,7 +52,7 @@ namespace OpenTK_Project.Core
         }
 
 
-        public Part() { }
+        public Face() { }
 
 
         public void LoadPartData(float[] vertices, uint[] indices, Point origin, Color4? color)

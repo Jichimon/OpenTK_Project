@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace OpenTK_Project.Resources.Objects.CarObject
 {
-    internal class Body : Part
+    internal class Body : Face
     {
         //atributos
         private readonly Point _origin = new Point(0.0f, 0.0f, 0.0f);

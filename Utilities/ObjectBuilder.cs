@@ -11,10 +11,10 @@ namespace OpenTK_Project.Utilities
 {
     class ObjectBuilder
     {
-        public static Part BuildPartFromJson(string fileName)
+        public static Face BuildPartFromJson(string fileName)
         {
             string jsonString = File.ReadAllText(fileName);
-            Part objeto = JsonConvert.DeserializeObject<Part>(jsonString);
+            Face objeto = JsonConvert.DeserializeObject<Face>(jsonString);
             Console.WriteLine(objeto);
             return objeto;
         }

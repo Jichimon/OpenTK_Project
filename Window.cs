@@ -18,16 +18,12 @@ namespace OpenTK_Project
     {
 
         //atributos
-        Car Car1;
-        House House1;
-
-        private readonly Vector3 _carInitialPosition = new(0.0f, 0.0f, -20.0f);
+        Scene Scene1;
 
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
         {
-            Car1 = new Car(_carInitialPosition);
-            House1 = new();
+            Scene1 = new();
         }
 
 
@@ -46,10 +42,7 @@ namespace OpenTK_Project
 
             Matrix4 view = Matrix4.LookAt(cameraPosition, target, up);
 
-
-            Car1.SetViewProjectionMatrix(view * projection);
-
-            House1.SetViewProjectionMatrix(view * projection);
+            Scene1.SetViewProjectionMatrix(view * projection);
 
             base.OnLoad();
         }
@@ -59,8 +52,8 @@ namespace OpenTK_Project
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             GL.Enable(EnableCap.DepthTest);
 
-            Car1.Draw();
-            House1.Draw();
+            Scene1.Draw();
+            
 
             Context.SwapBuffers();
             base.OnRenderFrame(e);
@@ -76,8 +69,7 @@ namespace OpenTK_Project
         //para cerrar el programa
         protected override void OnUnload()
         {
-            Car1.Destroy();
-            House1.Destroy();
+            Scene1.Destroy();
             base.OnUnload();
         }
 

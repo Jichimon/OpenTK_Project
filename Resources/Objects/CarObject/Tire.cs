@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace OpenTK_Project.Resources.Objects.CarObject
 {
-    internal class Tire : Part
+    internal class Tire : Face
     {
         //atributos
 
