@@ -69,58 +69,5 @@ namespace OpenTK_Project.Core
             }
         }
 
-
-
-        //-----------------------------------------------------------------------
-        //------------------TRANSFORMATIONS--------------------------------------
-        //-----------------------------------------------------------------------
-
-
-
-        public void MoveWith(Vector3 direction)
-        {
-
-        }
-
-
-        public void Move(Vector3 direction)
-        {
-            foreach (var item in Parts)
-            {
-                item.Value.Move(direction);
-            }
-        }
-
-        public void Scale(Vector3 factor)
-        {
-            foreach (var item in Parts)
-            {
-                item.Value.Scale(factor);
-            }
-        }
-
-        public void RotateX(float angle)
-        {
-            foreach (var item in Parts)
-            {
-                item.Value.RotateX(angle);
-            }
-        }
-
-        public void RotateY(float angle)
-        {
-            foreach (var item in Parts)
-            {
-                item.Value.RotateY(angle);
-            }
-        }
-
-        public void RotateZ(float angle)
-        {
-            foreach (var item in Parts)
-            {
-                item.Value.RotateZ(angle);
-            }
-        }
     }
 }

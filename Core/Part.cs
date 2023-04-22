@@ -173,41 +173,5 @@ namespace OpenTK_Project.Core
             Shader.Use();
         }
 
-
-        //-----------------------------------------------------------------------
-        //------------------TRANSFORMATIONS--------------------------------------
-        //-----------------------------------------------------------------------
-
-        public void Move(Vector3 direction)
-        {
-            Position = Position + direction;
-            Translations = Matrix4.CreateTranslation(direction);
-            ModelMatrix = ModelMatrix * Translations;
-        }
-
-        public void Scale(Vector3 factor)
-        {
-            Scales = Matrix4.CreateScale(factor);
-            ModelMatrix = ModelMatrix * Scales;
-        }
-
-        public void RotateX(float angle)
-        {
-            Rotations = Matrix4.CreateRotationX(angle);
-            ModelMatrix = ModelMatrix * Rotations;
-        }
-
-        public void RotateY(float angle)
-        {
-            Rotations = Matrix4.CreateRotationY(angle);
-            ModelMatrix = ModelMatrix * Rotations;
-        }
-
-        public void RotateZ(float angle)
-        {
-            Rotations = Matrix4.CreateRotationZ(angle);
-            ModelMatrix = ModelMatrix * Rotations;
-        }
-
     }
 }
