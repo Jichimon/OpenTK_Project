@@ -13,35 +13,71 @@ namespace OpenTK_Project.Utilities
     {
         public static Part BuildPartFromJson(string fileName)
         {
-            string jsonString = File.ReadAllText(fileName);
-            Part objeto = JsonConvert.DeserializeObject<Part>(jsonString);
-            Console.WriteLine(objeto);
-            return objeto;
+            try
+            {
+                string jsonString = File.ReadAllText(fileName);
+                Part? objeto = JsonConvert.DeserializeObject<Part>(jsonString);
+                Console.WriteLine(objeto);
+                if (objeto is null) throw new Exception("error alcargar el objeto,no puede ser nulo");
+                return objeto;
+            } catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            
         }
 
 
         public static void ToJson(string fileName, object shape)
         {
-            string jsonFile = JsonConvert.SerializeObject(shape);
-            File.Create(fileName);
-            File.WriteAllText(fileName, jsonFile);
+            try
+            {
+                string jsonFile = JsonConvert.SerializeObject(shape);
+                File.Create(fileName);
+                File.WriteAllText(fileName, jsonFile);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
 
         public static GraphicObject BuildFromJson(string fileName)
         {
-            string jsonString = File.ReadAllText(fileName);
-            GraphicObject objeto = JsonConvert.DeserializeObject<GraphicObject>(jsonString);
-            Console.WriteLine(objeto);
-            return objeto;
+            try
+            {
+                string jsonString = File.ReadAllText(fileName);
+                GraphicObject? objeto = JsonConvert.DeserializeObject<GraphicObject>(jsonString);
+                Console.WriteLine(objeto);
+                if (objeto is null) throw new Exception("error alcargar el objeto,no puede ser nulo");
+                return objeto;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
         }
 
         public static Scene BuildSceneFromJson(string fileName)
         {
-            string jsonString = File.ReadAllText(fileName);
-            Scene objeto = JsonConvert.DeserializeObject<Scene>(jsonString);
-            Console.WriteLine(objeto);
-            return objeto;
+            try
+            {
+                string jsonString = File.ReadAllText(fileName);
+                Scene? objeto = JsonConvert.DeserializeObject<Scene>(jsonString);
+                Console.WriteLine(objeto);
+                if (objeto is null) throw new Exception("error alcargar el objeto,no puede ser nulo");
+                return objeto;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
     }
