@@ -126,6 +126,8 @@ namespace OpenTK_Project.Core
             Shader.SetUniformColor4("u_Color", Color);
         }
 
+        // TODO:
+        // remove ViewProjection Matrxi from this class to window
         public void SetViewProjectionMatrix(Matrix4 viewProjectionMatrix)
         {
             ViewProjectionMatrix = viewProjectionMatrix;

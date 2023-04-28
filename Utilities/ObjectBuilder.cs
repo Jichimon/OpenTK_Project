@@ -63,12 +63,12 @@ namespace OpenTK_Project.Utilities
 
         }
 
-        public static Scene BuildSceneFromJson(string fileName)
+        public static Stage BuildSceneFromJson(string fileName)
         {
             try
             {
                 string jsonString = File.ReadAllText(fileName);
-                Scene? objeto = JsonConvert.DeserializeObject<Scene>(jsonString);
+                Stage? objeto = JsonConvert.DeserializeObject<Stage>(jsonString);
                 Console.WriteLine(objeto);
                 if (objeto is null) throw new Exception("error alcargar el objeto,no puede ser nulo");
                 return objeto;

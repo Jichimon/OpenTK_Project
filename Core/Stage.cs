@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace OpenTK_Project.Core
 {
-    public class Scene : IDrawable
+    public class Stage : IDrawable
     {
         Dictionary<string, GraphicObject> Objects;
 
@@ -21,18 +21,18 @@ namespace OpenTK_Project.Core
         public Vector3 Position { get => _position; set => _position = value; }
 
         [JsonConstructor]
-        public Scene(Dictionary<string, GraphicObject> objects)
+        public Stage(Dictionary<string, GraphicObject> objects)
         {
             Objects = objects;
         }
 
-        public Scene()
+        public Stage()
         {
             Objects = new();
         }
 
 
-        public static Scene LoadScene(string fileName)
+        public static Stage LoadScene(string fileName)
         {
             return ObjectBuilder.BuildSceneFromJson(fileName);
         }

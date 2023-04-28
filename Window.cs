@@ -16,13 +16,13 @@ namespace OpenTK_Project
     {
 
         //atributos
-        Scene Scene1;
+        Stage Stage1;
 
         public Window(string sceneryFileName, GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
         {
             Console.WriteLine(sceneryFileName);
-            Scene1 = Scene.LoadScene(sceneryFileName);
+            Stage1 = Stage.LoadScene(sceneryFileName);
         }
 
 
@@ -42,8 +42,8 @@ namespace OpenTK_Project
             Matrix4 view = Matrix4.LookAt(cameraPosition, target, up);
 
 
-            Scene1.OnLoad();
-            Scene1.SetViewProjectionMatrix(view * projection);
+            Stage1.OnLoad();
+            Stage1.SetViewProjectionMatrix(view * projection);
 
             base.OnLoad();
         }
@@ -53,7 +53,7 @@ namespace OpenTK_Project
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             GL.Enable(EnableCap.DepthTest);
 
-            Scene1.Draw();
+            Stage1.Draw();
 
             Context.SwapBuffers();
             base.OnRenderFrame(e);
@@ -73,7 +73,7 @@ namespace OpenTK_Project
         //para cerrar el programa
         protected override void OnUnload()
         {
-            Scene1.Destroy();
+            Stage1.Destroy();
             base.OnUnload();
         }
 
