@@ -22,7 +22,7 @@ namespace OpenTK_Project
             AllocConsole();
 
             Console.WriteLine("Running my first OpenTK App");
-            Console.WriteLine("Please select a scenery file to show.");
+            Console.WriteLine("Please select a stage file to show.");
             Console.WriteLine("Press a ENTER to continue...");
             Console.ReadLine();
 
@@ -36,6 +36,13 @@ namespace OpenTK_Project
                 }
             }
             //Console.WriteLine(fileName);
+
+            if (string.IsNullOrEmpty(fileName))
+            {
+                Console.WriteLine("You did not load anything..." + Environment.NewLine + "Press any key to close this program...");
+                Console.Read();
+                return;
+            }
             LoadOpenTK(fileName);
 
         }
